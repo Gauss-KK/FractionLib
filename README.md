@@ -8,6 +8,12 @@
 
 
 ``` C#
+
+usimg knumerics;
+
+.............
+.............
+
     MyFraction c3 = new MyFraction(3E200);
     MyFraction c2 = new MyFraction(2E200);
     MyFraction c1 = new MyFraction(1E200);
@@ -27,7 +33,7 @@
 
 
 
-#### Copare To:
+#### Copare To a usual coding:
 ``` C#
     double c3 = 3E200;
     double c2 = 2E200;
