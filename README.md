@@ -33,7 +33,7 @@ usimg knumerics;
 
 
 
-#### Copare To a usual coding:
+#### Copare to a usual coding:
 ``` C#
     double c3 = 3E200;
     double c2 = 2E200;
