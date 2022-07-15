@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Numerics;
 using System.Collections;
 using System.Collections.Generic;
@@ -58,6 +58,25 @@ namespace knumerics
 
         public MyFraction(double x0)
         {
+            if (Double.IsNaN(x0))
+            {
+                m_num = 0;
+                m_den = 0;
+                return;
+            }
+            else if (Double.IsPositiveInfinity(x0))
+            {
+                m_num = 1;
+                m_den = 0;
+                return;
+            }
+            else if (Double.IsNegativeInfinity(x0))
+            {
+                m_num = -1;
+                m_den = 0;
+                return;
+            }
+
             double x = x0;
             int sign = 1;
             if (x < 0)
@@ -192,6 +211,47 @@ namespace knumerics
             {
                 m_num = -m_num;
             }
+        }
+
+        public MyFraction abs()
+        {
+            BigInteger a = getNum();
+            BigInteger b = getDen();
+
+            if (a < 0)
+            {
+                a = -a;
+            }
+            if (b < 0)
+            {
+                b = -b;
+            }
+
+            return new MyFraction(a, b);
+        }
+
+        public MyFraction negate()
+        {
+            BigInteger a = getNum();
+            BigInteger b = getDen();
+
+            if (a == 0)
+            {
+                b = -b;
+                return new MyFraction(a, b);
+            }
+
+            if (a < 0)
+            {
+                a = -a;
+            }
+            if (b < 0)
+            {
+                b = -b;
+            }
+
+            a = -a;
+            return new MyFraction(a, b);
         }
 
         public static BigInteger gcd(BigInteger a, BigInteger b)
@@ -375,9 +435,9 @@ namespace knumerics
             if (m_den == 0)
             {
                 if (m_num > 0)
-                    s = "Infinite";
+                    s = "Infinity";
                 else if (m_num < 0)
-                    s = "-Infinite";
+                    s = "-Infinity";
                 else
                     s = "Intertermined (0/0)";
             }
@@ -402,11 +462,11 @@ namespace knumerics
             if (m_den == 0)
             {
                 if (m_num > 0)
-                    s = "Infinite";
+                    s = "Infinity";
                 else if (m_num < 0)
-                    s = "-Infinite";
+                    s = "-Infinity";
                 else
-                    s = "Intertermined (0/0)";
+                    s = "NaN";
             }
             else if (m_num == 0)
             {
@@ -825,11 +885,11 @@ namespace knumerics
 
             BigInteger c = left.getNum() * right.getDen();
             BigInteger d = left.getDen() * right.getNum();
-            if (d < 0)
+            if (c < d)
             {
                 return -1;
             }
-            else if (d > 0)
+            else if (c > d)
             {
                 return 1;
             }
@@ -1275,14 +1335,25 @@ namespace knumerics
             }
 
 
-            BigInteger c = left.getNum() * right.getNum();
-            BigInteger d = left.getDen() * right.getDen();
-            if (d < 0)
+            BigInteger a = left.m_num;
+            BigInteger b = left.m_den;
+            BigInteger c = right.m_num;
+            BigInteger d = right.m_den;
+
+            BigInteger g = gcd(a, d);
+            if (g > 1)
             {
-                c = -c;
-                d = -d;
+                a = a / g;
+                d = d / g;
             }
-            MyFraction z = new MyFraction(c, d);
+            g = gcd(c, b);
+            if (g > 1)
+            {
+                c = c / g;
+                b = b / g;
+            }
+
+            MyFraction z = new MyFraction(a * c, b * d);
             return z;
         }
 
@@ -1344,14 +1415,25 @@ namespace knumerics
                 }
             }
 
-            BigInteger c = left.getNum() * right.getDen();
-            BigInteger d = left.getDen() * right.getNum();
-            if (d < 0)
+            BigInteger a = left.m_num;
+            BigInteger b = left.m_den;
+            BigInteger c = right.m_num;
+            BigInteger d = right.m_den;
+
+            BigInteger g = gcd(a, c);
+            if (g > 1)
             {
-                c = -c;
-                d = -d;
+                a = a / g;
+                c = c / g;
             }
-            MyFraction z = new MyFraction(c, d);
+            g = gcd(b, d);
+            if (g > 1)
+            {
+                b = b / g;
+                d = d / g;
+            }
+
+            MyFraction z = new MyFraction(a * d, b * c);
             return z;
         }
 
@@ -1412,78 +1494,121 @@ namespace knumerics
                 }
             }
 
-            BigInteger c = left.getNum() * right.getDen();
-            BigInteger d = left.getDen() * right.getNum();
-            if (d < 0)
+            BigInteger a = left.m_num;
+            BigInteger b = left.m_den;
+            BigInteger c = right.m_num;
+            BigInteger d = right.m_den;
+
+            BigInteger g = gcd(a, c);
+            if (g > 1)
             {
-                c = -c;
-                d = -d;
+                a = a / g;
+                c = c / g;
+            }
+            g = gcd(b, d);
+            if (g > 1)
+            {
+                b = b / g;
+                d = d / g;
             }
 
-            BigInteger q = c / d;
-            BigInteger r = c - c * q;
+            BigInteger q = (a * d) / (b * c);
 
             MyFraction z = new MyFraction(q, 1);
             return z;
         }
 
-        public static (MyFraction, MyFraction) divRem(MyFraction left, MyFraction right)
+        public static MyFraction divRem(ref MyFraction rem, MyFraction left, MyFraction right)
         {
             if (left.isNaN() || right.isNaN())
             {
-                return (new MyFraction(0, 0), new MyFraction(0, 0));
+                /// return (new MyFraction(0, 0), new MyFraction(0, 0));
+                rem = new MyFraction(0, 0);
+                return new MyFraction(0, 0);
             }
 
             if (left.isInfinite() || right.isInfinite())
             {
                 if (left.isInfinite() && right.isInfinite())
                 {
-                    return (new MyFraction(0, 0), new MyFraction(0, 0));
+                    /// return (new MyFraction(0, 0), new MyFraction(0, 0));
+                    rem = new MyFraction(0, 0);
+                    return new MyFraction(0, 0);
                 }
                 else if (left.isInfinite())
                 {
-                    return (new MyFraction(0, 0), new MyFraction(0, 0));
+                    /// return (new MyFraction(0, 0), new MyFraction(0, 0));
+                    rem = new MyFraction(0, 0);
+                    return new MyFraction(0, 0);
                 }
                 else if (right.isInfinite())
                 {
-                    return (new MyFraction(0, 1), new MyFraction(0, 0));
+                    /// return (new MyFraction(0, 1), new MyFraction(0, 0));
+                    rem = new MyFraction(0, 1);
+                    return new MyFraction(0, 0);
                 }
             }
 
-            BigInteger c = left.getNum() * right.getDen();
-            BigInteger d = left.getDen() * right.getNum();
-            if (d < 0)
+            BigInteger a = left.m_num;
+            BigInteger b = left.m_den;
+            BigInteger c = right.m_num;
+            BigInteger d = right.m_den;
+
+            if (c < 0)
             {
                 c = -c;
                 d = -d;
             }
 
-            BigInteger g = gcd(c, d);
+            BigInteger g = gcd(a, c);
             if (g > 1)
             {
-                c /= g;
-                d /= g;
+                a = a / g;
+                c = c / g;
+            }
+            g = gcd(b, d);
+            if (g > 1)
+            {
+                b = b / g;
+                d = d / g;
             }
 
-            BigInteger q = c / d;
-            BigInteger r = c - c * q;
+            BigInteger q = (a * d) / (b * c);
+            BigInteger r = (a * d) - (b * c) * q;
 
-            MyFraction z = new MyFraction(q, 1);
-            MyFraction w = left - right * z;
+            /*
+            if (r < 0)
+            {
+                   q = q - 1;
+                   r = r + (b * c);
+            }
+            */
 
+            MyFraction z = new MyFraction(a * d, b*c);
+            MyFraction z2 = z.floor();
+
+            /// MyFraction w = new MyFraction(r, b * c);
+            /// action w = left - right * new MyFraction(q, 1);
+            MyFraction w = left - right*z2;
+
+
+            /*
             if (w.isNegative())
             {
                 z = z - new MyFraction(1, 1);
-                w = left - abs(right) * z;
+                w = left + abs(right);
             }
-            else if (w >= right)
+            else if (w >= abs(right))
             {
                 z = z + new MyFraction(1, 1);
-                w = left - abs(right) * z;
+                w = left - abs(right);
             }
+            */
 
-            return (z, w);
+            rem = w;
+            return z2;
         }
+
 
         public static MyFraction operator %(MyFraction left, MyFraction right)
         {
@@ -1512,8 +1637,26 @@ namespace knumerics
                     return new MyFraction(-1, 0);
             }
 
-            MyFraction quot = intDiv(left, right);
-            MyFraction rem = left - quot * right;
+            BigInteger a = left.m_num;
+            BigInteger b = left.m_den;
+            BigInteger c = right.m_num;
+            BigInteger d = right.m_den;
+
+            BigInteger g = gcd(a, c);
+            if (g > 1)
+            {
+                a = a / g;
+                c = c / g;
+            }
+            g = gcd(b, d);
+            if (g > 1)
+            {
+                b = b / g;
+                d = d / g;
+            }
+
+            BigInteger q = (a * d) / (b * c);
+            MyFraction rem = left - new MyFraction(q * right.getNum(), right.getDen());
 
             return rem;
         }
