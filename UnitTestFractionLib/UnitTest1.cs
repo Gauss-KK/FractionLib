@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Numerics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -43,14 +43,14 @@ namespace UnitTestFractionLib
             Assert.AreEqual(f.ToString(), "5/3");
             Assert.AreEqual(g.ToString(), "30");
 
-            MyFraction q, r;
-            (q, r) = MyFraction.divRem(f, g); ;
+            MyFraction q, r = new MyFraction(0, 1);
+            q = MyFraction.divRem(ref r, f, g); ;
 
-            Assert.AreEqual(q.ToString(), "1");
-            Assert.AreEqual(r.ToString(), "-85/3");
+            Assert.AreEqual(q.ToString(), "0");
+            Assert.AreEqual(r.ToString(), "5/3");
 
-            MyFraction q2, r2;
-            (q2, r2) = MyFraction.divRem(g, f); ;
+            MyFraction q2, r2 = new MyFraction(0, 1);
+            q2 = MyFraction.divRem(ref r2, g, f); ;
 
             Assert.AreEqual(q2.ToString(), "18");
             Assert.AreEqual(r2.ToString(), "0");
@@ -141,6 +141,80 @@ namespace UnitTestFractionLib
             Assert.AreEqual((-f).toDecimalString().ToString(), "-0.08500000000000000000");
         }
 
+
+        [TestMethod]
+        public void TestNaN()
+        {
+            MyFraction f1 = new MyFraction(double.NaN);
+            MyFraction f2 = new MyFraction(0, 0);
+            MyFraction f3 = new MyFraction(0, 1) / new MyFraction(0, 1);
+            MyFraction f4 = new MyFraction(0, 1) * new MyFraction(-1, 0);
+            MyFraction f5 = new MyFraction(1, 0) - new MyFraction(1, 0);
+            MyFraction f6 = new MyFraction(-1, 0) - new MyFraction(-1, 0);
+            MyFraction f7 = new MyFraction(1, 0) + new MyFraction(-1, 0);
+
+            Assert.AreEqual(f1.ToString(), "Intertermined (0/0)");
+            Assert.AreEqual(f2.ToString(), "Intertermined (0/0)");
+            Assert.AreEqual(f3.ToString(), "Intertermined (0/0)");
+            Assert.AreEqual(f4.ToString(), "Intertermined (0/0)");
+            Assert.AreEqual(f5.ToString(), "Intertermined (0/0)");
+            Assert.AreEqual(f6.ToString(), "Intertermined (0/0)");
+            Assert.AreEqual(f7.ToString(), "Intertermined (0/0)");
+
+            Assert.AreEqual(f1.toDecimalString(), "NaN");
+            Assert.AreEqual(f2.toDecimalString(), "NaN");
+            Assert.AreEqual(f3.toDecimalString(), "NaN");
+            Assert.AreEqual(f4.toDecimalString(), "NaN");
+            Assert.AreEqual(f5.toDecimalString(), "NaN");
+            Assert.AreEqual(f6.toDecimalString(), "NaN");
+            Assert.AreEqual(f7.toDecimalString(), "NaN");
+        }
+
+        [TestMethod]
+        public void TestInfinity()
+        {
+            MyFraction f1 = new MyFraction(1.0 / 0.0);
+            MyFraction f2 = new MyFraction(-1.0 / 0.0);
+            MyFraction f3 = new MyFraction(1, 0);
+            MyFraction f4 = new MyFraction(-1, 0);
+            MyFraction f5 = new MyFraction(2, 3) / new MyFraction(1, 0);
+            MyFraction f6 = new MyFraction(-9, 10) / new MyFraction(1, 0);
+            MyFraction f7 = new MyFraction(1, 4) * new MyFraction(1, 0);
+            MyFraction f8 = new MyFraction(100, 1) * new MyFraction(-1, 0);
+            MyFraction f9 = new MyFraction(1, 0) + new MyFraction(1, 0);
+            MyFraction f10 = new MyFraction(3, 0) * new MyFraction(-5, 0);
+            MyFraction f11 = new MyFraction(30, 0) * new MyFraction(-500, 0);
+            MyFraction f12 = new MyFraction(0, -2) * new MyFraction(-5, 0);
+            MyFraction f13 = new MyFraction(0, -2) + new MyFraction(-5, 0);
+
+            Assert.AreEqual(f1.ToString(), "Infinity");
+            Assert.AreEqual(f2.ToString(), "-Infinity");
+            Assert.AreEqual(f3.ToString(), "Infinity");
+            Assert.AreEqual(f4.ToString(), "-Infinity");
+            Assert.AreEqual(f5.ToString(), "0");
+            Assert.AreEqual(f6.ToString(), "-0");
+            Assert.AreEqual(f7.ToString(), "Infinity");
+            Assert.AreEqual(f8.ToString(), "-Infinity");
+            Assert.AreEqual(f9.ToString(), "Infinity");
+            Assert.AreEqual(f10.ToString(), "-Infinity");
+            Assert.AreEqual(f11.ToString(), "-Infinity");
+            Assert.AreEqual(f12.ToString(), "Intertermined (0/0)"); ;
+            Assert.AreEqual(f13.ToString(), "-Infinity");
+
+            Assert.AreEqual(f1.toDecimalString(), "Infinity");
+            Assert.AreEqual(f2.toDecimalString(), "-Infinity");
+            Assert.AreEqual(f3.toDecimalString(), "Infinity");
+            Assert.AreEqual(f4.toDecimalString(), "-Infinity");
+            Assert.AreEqual(f5.toDecimalString(), "0");
+            Assert.AreEqual(f6.toDecimalString(), "-0");
+            Assert.AreEqual(f7.toDecimalString(), "Infinity");
+            Assert.AreEqual(f8.toDecimalString(), "-Infinity");
+            Assert.AreEqual(f9.toDecimalString(), "Infinity");
+            Assert.AreEqual(f10.toDecimalString(), "-Infinity");
+            Assert.AreEqual(f11.toDecimalString(), "-Infinity");
+            Assert.AreEqual(f12.toDecimalString(), "NaN"); ;
+            Assert.AreEqual(f13.toDecimalString(), "-Infinity");
+        }
 
         [TestMethod]
         public void TestSqrt()
