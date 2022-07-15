@@ -213,7 +213,7 @@ namespace TestConsoleApp
             Console.WriteLine("As a decimal expression, f6 = {0}", f6.toDecimalString());
             Console.WriteLine("As a decimal expression, f7 = {0}", f7.toDecimalString());
             Console.WriteLine();
-            ;
+
             Test_Infinity();
 
             Console.Write("Press any key...");
