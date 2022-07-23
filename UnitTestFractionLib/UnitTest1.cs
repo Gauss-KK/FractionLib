@@ -93,11 +93,11 @@ namespace UnitTestFractionLib
             Assert.AreEqual(f.round().ToString(), "0");
             Assert.AreEqual(f.round(2).ToString(), "9/100");
 
-            Assert.AreEqual(f.round(2).toDecimalString(40).ToString(), "0.0900000000000000000000000000000000000000");
-            Assert.AreEqual((f * new MyFraction(1000000, 1)).round(-4).toDecimalString(10), "90000");
-            Assert.AreEqual((f * new MyFraction(1000000, 1)).floor(-4).toDecimalString(10), "80000");
-            Assert.AreEqual((f * new MyFraction(1000000, 1)).ceil(-4).toDecimalString(10), "90000");
-            Assert.AreEqual((f * new MyFraction(1000000, 1)).trunc(-4).toDecimalString(10), "80000");
+            Assert.AreEqual(f.round(2).ToDecimalString(40).ToString(), "0.09");
+            Assert.AreEqual((f * new MyFraction(1000000, 1)).round(-4).ToDecimalString(10), "90000");
+            Assert.AreEqual((f * new MyFraction(1000000, 1)).floor(-4).ToDecimalString(10), "80000");
+            Assert.AreEqual((f * new MyFraction(1000000, 1)).ceil(-4).ToDecimalString(10), "90000");
+            Assert.AreEqual((f * new MyFraction(1000000, 1)).trunc(-4).ToDecimalString(10), "80000");
 
             Assert.AreEqual(f.trunc().ToString(), "0");
             Assert.AreEqual(f.trunc(2).ToString(), "2/25");
@@ -105,8 +105,8 @@ namespace UnitTestFractionLib
             Assert.AreEqual(f.intPart().ToString(), "0");
             Assert.AreEqual(f.fracPart().ToString(), "17/200");
 
-            Assert.AreEqual(f.toDecimalString().ToString(), "0.08500000000000000000");
-            Assert.AreEqual(f.toDecimalString(40).ToString(), "0.0850000000000000000000000000000000000000");
+            Assert.AreEqual(f.ToDecimalString().ToString(), "0.085");
+            Assert.AreEqual(f.ToDecimalString(40).ToString(), "0.085");
         }
 
 
@@ -125,11 +125,11 @@ namespace UnitTestFractionLib
             Assert.AreEqual((-f).round().ToString(), "0");
             Assert.AreEqual((-f).round(2).ToString(), "-2/25");
 
-            Assert.AreEqual((-f).round(2).toDecimalString(40).ToString(), "-0.0800000000000000000000000000000000000000");
-            Assert.AreEqual(((-f) * new MyFraction(1000000, 1)).round(-4).toDecimalString(10), "-80000");
-            Assert.AreEqual(((-f) * new MyFraction(1000000, 1)).floor(-4).toDecimalString(10), "-90000");
-            Assert.AreEqual(((-f) * new MyFraction(1000000, 1)).ceil(-4).toDecimalString(10), "-80000");
-            Assert.AreEqual(((-f) * new MyFraction(1000000, 1)).trunc(-4).toDecimalString(10), "-80000");
+            Assert.AreEqual((-f).round(2).ToDecimalString(40).ToString(), "-0.08");
+            Assert.AreEqual(((-f) * new MyFraction(1000000, 1)).round(-4).ToDecimalString(10), "-80000");
+            Assert.AreEqual(((-f) * new MyFraction(1000000, 1)).floor(-4).ToDecimalString(10), "-90000");
+            Assert.AreEqual(((-f) * new MyFraction(1000000, 1)).ceil(-4).ToDecimalString(10), "-80000");
+            Assert.AreEqual(((-f) * new MyFraction(1000000, 1)).trunc(-4).ToDecimalString(10), "-80000");
 
             Assert.AreEqual((-f).trunc().ToString(), "0");
             Assert.AreEqual((-f).trunc(2).ToString(), "-2/25");
@@ -137,8 +137,8 @@ namespace UnitTestFractionLib
             Assert.AreEqual((-f).intPart().ToString(), "-1");
             Assert.AreEqual((-f).fracPart().ToString(), "183/200");
 
-            Assert.AreEqual((-f).toDecimalString(50).ToString(), "-0.08500000000000000000000000000000000000000000000000");
-            Assert.AreEqual((-f).toDecimalString().ToString(), "-0.08500000000000000000");
+            Assert.AreEqual((-f).ToDecimalString(50).ToString(), "-0.085");
+            Assert.AreEqual((-f).ToDecimalString().ToString(), "-0.085");
         }
 
 
@@ -161,13 +161,13 @@ namespace UnitTestFractionLib
             Assert.AreEqual(f6.ToString(), "Intertermined (0/0)");
             Assert.AreEqual(f7.ToString(), "Intertermined (0/0)");
 
-            Assert.AreEqual(f1.toDecimalString(), "NaN");
-            Assert.AreEqual(f2.toDecimalString(), "NaN");
-            Assert.AreEqual(f3.toDecimalString(), "NaN");
-            Assert.AreEqual(f4.toDecimalString(), "NaN");
-            Assert.AreEqual(f5.toDecimalString(), "NaN");
-            Assert.AreEqual(f6.toDecimalString(), "NaN");
-            Assert.AreEqual(f7.toDecimalString(), "NaN");
+            Assert.AreEqual(f1.ToDecimalString(), "NaN");
+            Assert.AreEqual(f2.ToDecimalString(), "NaN");
+            Assert.AreEqual(f3.ToDecimalString(), "NaN");
+            Assert.AreEqual(f4.ToDecimalString(), "NaN");
+            Assert.AreEqual(f5.ToDecimalString(), "NaN");
+            Assert.AreEqual(f6.ToDecimalString(), "NaN");
+            Assert.AreEqual(f7.ToDecimalString(), "NaN");
         }
 
         [TestMethod]
@@ -201,19 +201,51 @@ namespace UnitTestFractionLib
             Assert.AreEqual(f12.ToString(), "Intertermined (0/0)"); ;
             Assert.AreEqual(f13.ToString(), "-Infinity");
 
-            Assert.AreEqual(f1.toDecimalString(), "Infinity");
-            Assert.AreEqual(f2.toDecimalString(), "-Infinity");
-            Assert.AreEqual(f3.toDecimalString(), "Infinity");
-            Assert.AreEqual(f4.toDecimalString(), "-Infinity");
-            Assert.AreEqual(f5.toDecimalString(), "0");
-            Assert.AreEqual(f6.toDecimalString(), "-0");
-            Assert.AreEqual(f7.toDecimalString(), "Infinity");
-            Assert.AreEqual(f8.toDecimalString(), "-Infinity");
-            Assert.AreEqual(f9.toDecimalString(), "Infinity");
-            Assert.AreEqual(f10.toDecimalString(), "-Infinity");
-            Assert.AreEqual(f11.toDecimalString(), "-Infinity");
-            Assert.AreEqual(f12.toDecimalString(), "NaN"); ;
-            Assert.AreEqual(f13.toDecimalString(), "-Infinity");
+            Assert.AreEqual(f1.ToDecimalString(), "Infinity");
+            Assert.AreEqual(f2.ToDecimalString(), "-Infinity");
+            Assert.AreEqual(f3.ToDecimalString(), "Infinity");
+            Assert.AreEqual(f4.ToDecimalString(), "-Infinity");
+            Assert.AreEqual(f5.ToDecimalString(), "0");
+            Assert.AreEqual(f6.ToDecimalString(), "-0");
+            Assert.AreEqual(f7.ToDecimalString(), "Infinity");
+            Assert.AreEqual(f8.ToDecimalString(), "-Infinity");
+            Assert.AreEqual(f9.ToDecimalString(), "Infinity");
+            Assert.AreEqual(f10.ToDecimalString(), "-Infinity");
+            Assert.AreEqual(f11.ToDecimalString(), "-Infinity");
+            Assert.AreEqual(f12.ToDecimalString(), "NaN"); ;
+            Assert.AreEqual(f13.ToDecimalString(), "-Infinity");
+        }
+
+        [TestMethod]
+        public void TestToDecimalString()
+        {
+
+            MyFraction f = new MyFraction(1.9999);
+            MyFraction g = new MyFraction(1.9995);
+
+            Assert.AreEqual(f.ToString(), "19999/10000");
+            Assert.AreEqual(f.ToMixedForm(), "1_9999/10000");
+            Assert.AreEqual(f.ToDecimalString(), "1.9999");
+            Assert.AreEqual(f.ToDecimalString(7), "1.9999");
+            Assert.AreEqual(f.ToDecimalString(3), "2");
+
+            Assert.AreEqual((-f).ToString(), "-19999/10000");
+            Assert.AreEqual((-f).ToMixedForm(), "(-2)_1/10000");
+            Assert.AreEqual((-f).ToDecimalString(), "-1.9999");
+            Assert.AreEqual((-f).ToDecimalString(7), "-1.9999");
+            Assert.AreEqual((-f).ToDecimalString(3), "-2");
+
+            Assert.AreEqual(g.ToString(), "3999/2000");
+            Assert.AreEqual(g.ToMixedForm(), "1_1999/2000");
+            Assert.AreEqual(g.ToDecimalString(), "1.9995");
+            Assert.AreEqual(g.ToDecimalString(7), "1.9995");
+            Assert.AreEqual(g.ToDecimalString(3), "2");
+
+            Assert.AreEqual((-g).ToString(), "-3999/2000");
+            Assert.AreEqual((-g).ToMixedForm(), "(-2)_1/2000");
+            Assert.AreEqual((-g).ToDecimalString(), "-1.9995");
+            Assert.AreEqual((-g).ToDecimalString(7), "-1.9995");
+            Assert.AreEqual((-g).ToDecimalString(3), "-1.999");
         }
 
         [TestMethod]
@@ -222,7 +254,7 @@ namespace UnitTestFractionLib
             MyFraction g2 = new MyFraction(Math.Sqrt(2));
 
             Assert.AreEqual(g2.ToString(), "2486151499/1757974584");
-            Assert.AreEqual(g2.toDecimalString(), "1.41421356237309515050");
+            Assert.AreEqual(g2.ToDecimalString(), "1.4142135623730951505");
             Assert.AreEqual(Math.Sqrt(2).ToString(), "1.4142135623731");
         }
 

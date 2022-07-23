@@ -158,7 +158,7 @@ namespace knumerics
                 x = 1.0 / r;
 
                 q = Math.Floor(x);
-                if (q == 0 || r < 1.0E-14)
+                if (q == 0 || r/q < 1.0E-14)
                 {
                     break;
                 }
@@ -429,6 +429,251 @@ namespace knumerics
         bool isNonPositive() { return m_num <= 0 && m_den != 0; }
         bool isNonNegative() { return m_num <= 0 && m_den != 0; }
 
+
+        public string ToMixedForm()
+        {
+            string s = "";
+            if (this.m_den == 0)
+            {
+                if (this.m_num > 0)
+                    return "Infinity";
+                else if (this.m_num < 0)
+                    return "-Infinity";
+                else
+                    return "0/0 (Indeterminated)";
+            }
+            else if (this.m_den == -1 && this.m_num == 0)
+                return "-0";
+            else if (this.m_den == -1)
+                return String.Format("%d", -this.m_num);
+            else if (this.m_den == 1)
+                return String.Format("%d", this.m_num);
+            else
+            {
+                BigInteger a = this.m_num;
+                BigInteger b = this.m_den;
+                if (b < 0)
+                {
+                    a = -a;
+                    b = -b;
+                }
+
+                BigInteger q = a / b;
+                BigInteger r = a - b * q;
+                if (r < 0)
+                {
+                    q = q - 1;
+                    r = r + b;
+                }
+
+                if (r != 0)
+                {
+                    if (q < 0)
+                        s += String.Format("({0})", q);
+                    else if (q > 0)
+                        s += String.Format("{0}", q);
+                    s += String.Format("_{0}/{1}", r, b);
+                }
+                else
+                {
+                    s += String.Format("{0}", q);
+                }
+            }
+
+            return s;
+        }
+
+
+        public string ToDecimalString(int prec = 20)
+        {
+            //////// Console.WriteLine("Start toDecimalString(i) with this = {0}", this);
+
+            string s = "";
+            if (this.m_den == 0)
+            {
+                if (this.m_num > 0)
+                    s = "Infinity";
+                else if (this.m_num < 0)
+                    s = "-Infinity";
+                else
+                    s = "NaN";
+                return s;
+            }
+            else if (this.m_den == -1 && this.m_num == 0)
+            {
+                s = "-0";
+                return s;
+            }
+            else if (this.m_den == -1)
+            {
+                s = String.Format("{0}", -this.m_num);
+                return s;
+            }
+            else if (this.m_den == 1)
+            {
+                s = String.Format("{0}", this.m_num);
+                return s;
+            }
+
+
+            BigInteger a = this.m_num;
+            BigInteger b = this.m_den;
+            if (b < 0)
+            {
+                a = -a;
+                b = -b;
+            }
+
+            int sign = 1;
+            if (a < 0)
+            {
+                a = -a;
+                sign = -1;
+            }
+
+            BigInteger q = a / b;
+            BigInteger r = a - b * q;
+
+            if (sign < 0)
+            {
+                s += "-";
+            }
+
+            if (prec <= 0)
+            {
+                /// s += String.Format("{0}", q);
+                /// return s;
+
+                BigInteger r2 = new BigInteger(10);
+
+                BigInteger y = (r2 + this.m_den / 2) / this.m_den;
+                int ylen = (String.Format("{0}", y)).Length;
+
+                s += new String('0', prec - ylen);
+                s += String.Format("{0}", (r2 + this.m_den / 2) / this.m_den);
+                return s;
+            }
+
+            //////// Console.WriteLine("Step [A]");
+
+            if (r != 0)
+            {
+                //////// Console.WriteLine("  Step [B]");
+
+                BigInteger nval = q;
+
+                // s += String.format("%d", q);
+                /// s += String.format("_%d/%d", r, b);
+                /*******
+                long t = (r + b) * mPow(10, 11) / b;
+                t = (t + 5) / 10;
+                String s2 = String.format("%d",t);
+                s += String.format(".%s", s2.substring(1));
+                ******/
+                BigInteger t = r + b;
+                BigInteger q3 = 0;
+                string s3 = "";
+                for (int i = 0; i < prec + 1; i++)
+                {
+                    /// q3 = (t * 10) / b;
+                    q3 = t / b;
+                    s3 += String.Format("{0}", q3);
+                    /// t = (t * 10) - q3*b;
+                    t = (t - b * q3) * 10;
+                }
+
+                // q3 = (t * 10) / b;
+                // s3 += String.format("%d", q3);
+                //  t = (t * 10) - q3*b;
+
+                //////// Console.WriteLine("    prec = {0}, 2*t = {1}, b = {2}, s3 = {3}", prec, 2*t, b, s3);
+
+
+                int carry = 0;
+
+                /// if (sign > 0 && q3 >= 5)
+                if (sign > 0 && t / 5 >= b)
+                    carry = 1;
+                /// else if (sign < 0 && q3 > 0 && q3 <= 5)
+                /// else if (sign < 0 && q3 > 5)
+                else if (sign < 0 && t / 5 > b)
+                    carry = 1;
+
+                //////// Console.WriteLine("             carry = {0}, 2*t = {1}, t/5 = {2}. b = {3}, sign = {4}", carry, 2*t, t/5, b, sign);
+
+                char[] digits = s3.ToCharArray();
+                for (int j = digits.Length - 1; j >= 0; j--)
+                {
+                    if (carry == 0)
+                        break;
+
+                    if (digits[j] == '9')
+                    {
+                        digits[j] = '0';
+                        carry = 1;
+                    }
+                    else
+                    {
+                        digits[j] = (char)(digits[j] + 1);
+                        carry = 0;
+                    }
+                    /////// System.out.printf(" %c", digits[j]);
+                }
+                /////// System.out.println("\n");
+
+                // s += String.format("%d", q);
+                //////// if (carry > 0)
+                if (digits[0] == '2')
+                {
+                    nval += 1;
+                }
+
+                /// s += String.format(".%s", s3.substring(1, s3.length() - 1));
+                string s4 = new String(digits);
+                int j1 = digits.Length;
+                for (int j = j1 - 1; j >= 0; j--)
+                {
+                    /// System.out.printf("    digits[%d] = '%c'\n", j, digits[j]);
+                    if (digits[j] != '0')
+                    {
+                        j1 = j + 1;
+                        break;
+                    }
+                }
+
+                ///////// Console.WriteLine("    j1 = {0}\n", j1);
+
+                /// if (j1 < digits.length)
+                /// {
+                if (j1 > 0)
+                {
+                    s4 = s4.Substring(1, j1 - 1);
+                    /// s += String.Format("{0}.{1}", nval, s4.substring(0, s4.length() ));
+                    if (s4.Length > 0)
+                        s += String.Format("{0}.{1}", nval, s4);
+                    else
+                        s += String.Format("{0}", nval);
+                    //////// / nsole.WriteLine("   s4 = {0}\n", s4);
+                    //////// Console.WriteLine("   s = {0}\n", s);
+                }
+                else
+                {
+                    s += String.Format("{0}", nval);
+                }
+                /// }
+                /// s += String.format("%d.%s", nval, s4.substring(0, s4.length() ));
+            }
+            else
+            {
+                s += String.Format("{0}", q);
+            }
+
+            ////////  Console.WriteLine(" s = {0}\n", s);
+
+            return s;
+        }
+        ///
+
         public override string ToString()
         {
             string s = "";
@@ -455,64 +700,6 @@ namespace knumerics
             return s;
         }
 
-
-        public string toDecimalString(int pos = 20)
-        {
-            string s = "";
-            if (m_den == 0)
-            {
-                if (m_num > 0)
-                    s = "Infinity";
-                else if (m_num < 0)
-                    s = "-Infinity";
-                else
-                    s = "NaN";
-            }
-            else if (m_num == 0)
-            {
-                if (m_den > 0)
-                    s = "0";
-                else if (m_den < 0)
-                    s = "-0";
-            }
-            else if (m_den == 1)
-            {
-                s = String.Format("{0}", m_num);
-            }
-            else
-            {
-                BigInteger num = m_num;
-                BigInteger den = m_den;
-                int sign = 1;
-                if (num < 0)
-                {
-                    num = -num;
-                    sign = -1;
-                }
-                BigInteger q = num / den;
-                BigInteger r = num - q * den;
-
-                if (sign < 0)
-                {
-                    s += "-";
-                }
-                s += String.Format("{0}", q);
-                if (r > 0)
-                {
-                    s += ".";
-                    BigInteger r2 = new BigInteger(10);
-                    if (pos > 0)
-                        r2 = r * BigInteger.Pow(new BigInteger(10), pos);
-
-                    BigInteger y = (r2 + den / 2) / den;
-                    int ylen = (String.Format("{0}", y)).Length;
-
-                    s += new String('0', pos - ylen);
-                    s += String.Format("{0}", (r2 + den / 2) / den);
-                }
-            }
-            return s;
-        }
 
         public MyFraction floor(int pos = 0)
         {

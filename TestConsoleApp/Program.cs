@@ -44,22 +44,37 @@ namespace TestConsoleApp
             Console.WriteLine("f13 = {0}", f13);
             Console.WriteLine();
 
-            Console.WriteLine("As a dcimal expression, f1 = {0}", f1.toDecimalString());
-            Console.WriteLine("As a dcimal expression, f2 = {0}", f2.toDecimalString());
-            Console.WriteLine("As a dcimal expression, f3 = {0}", f3.toDecimalString());
-            Console.WriteLine("As a dcimal expression, f4 = {0}", f4.toDecimalString());
-            Console.WriteLine("As a dcimal expression, f5 = {0}", f5.toDecimalString());
-            Console.WriteLine("As a dcimal expression, f6 = {0}", f6.toDecimalString());
-            Console.WriteLine("As a dcimal expression, f7 = {0}", f7.toDecimalString());
-            Console.WriteLine("As a dcimal expression, f8 = {0}", f8.toDecimalString());
-            Console.WriteLine("As a dcimal expression, f8 = {0}", f9.toDecimalString());
-            Console.WriteLine("As a dcimal expression, f10 = {0}", f10.toDecimalString());
-            Console.WriteLine("As a dcimal expression, f11 = {0}", f11.toDecimalString());
-            Console.WriteLine("As a dcimal expression, f12 = {0}", f12.toDecimalString());
-            Console.WriteLine("As a dcimal expression, f13 = {0}", f13.toDecimalString());
+            Console.WriteLine("As a dcimal expression, f1 = {0}", f1.ToDecimalString());
+            Console.WriteLine("As a dcimal expression, f2 = {0}", f2.ToDecimalString());
+            Console.WriteLine("As a dcimal expression, f3 = {0}", f3.ToDecimalString());
+            Console.WriteLine("As a dcimal expression, f4 = {0}", f4.ToDecimalString());
+            Console.WriteLine("As a dcimal expression, f5 = {0}", f5.ToDecimalString());
+            Console.WriteLine("As a dcimal expression, f6 = {0}", f6.ToDecimalString());
+            Console.WriteLine("As a dcimal expression, f7 = {0}", f7.ToDecimalString());
+            Console.WriteLine("As a dcimal expression, f8 = {0}", f8.ToDecimalString());
+            Console.WriteLine("As a dcimal expression, f8 = {0}", f9.ToDecimalString());
+            Console.WriteLine("As a dcimal expression, f10 = {0}", f10.ToDecimalString());
+            Console.WriteLine("As a dcimal expression, f11 = {0}", f11.ToDecimalString());
+            Console.WriteLine("As a dcimal expression, f12 = {0}", f12.ToDecimalString());
+            Console.WriteLine("As a dcimal expression, f13 = {0}", f13.ToDecimalString());
+            Console.WriteLine();
+        }
+
+        static void Test_ToDecimalString()
+        {
+            MyFraction f = new MyFraction(1.9999);
+            Console.WriteLine("f = {0} = {1} = {2}", f, f.ToMixedForm(), f.ToDecimalString(7));
+            Console.WriteLine("-f = {0} = {1} = {2}", -f, (-f).ToMixedForm(), (-f).ToDecimalString(7));
+            Console.WriteLine("f = {0} = {1} = {2}", f, f.ToMixedForm(), f.ToDecimalString(3));
+            Console.WriteLine("-f = {0} = {1} = {2}", -f, (-f).ToMixedForm(), (-f).ToDecimalString(3));
             Console.WriteLine();
 
-;
+            MyFraction g = new MyFraction(1.9995);
+            Console.WriteLine("g = {0} = {1} = {2}", g, g.ToMixedForm(), g.ToDecimalString(7));
+            Console.WriteLine("-g = {0} = {1} = {2}", -g, (-g).ToMixedForm(), (-g).ToDecimalString(7));
+            Console.WriteLine("g = {0} = {1} = {2}", g, g.ToMixedForm(), g.ToDecimalString(3));
+            Console.WriteLine("-g = {0} = {1} = {2}", -g, (-g).ToMixedForm(), (-g).ToDecimalString(3));
+            Console.WriteLine();
         }
 
         static void Main(string[] args)
@@ -96,14 +111,14 @@ namespace TestConsoleApp
             Console.WriteLine("  f = {0}", f);
             Console.WriteLine("  g = {0}", g);
             Console.WriteLine("Then we get");
-            Console.WriteLine("    f / g = {0}", f/ g);
+            Console.WriteLine("    f / g = {0}", f / g);
             MyFraction q, r = new MyFraction(0, 1);
             q = MyFraction.divRem(ref r, f, g); ;
             Console.WriteLine("And, after trying q = divRem(ref r, f, g), we get");
             Console.WriteLine("     Quptient: q = {0}", q);
             Console.WriteLine("    Remainder: r = {0}", r);
             Console.WriteLine("Check Euclidean algorithm for divison: f / g");
-            Console.WriteLine("Checking: g*q + r = {0}, f = {1}", g*q + r, f);
+            Console.WriteLine("Checking: g*q + r = {0}, f = {1}", g * q + r, f);
             Console.WriteLine("Checking: r >= 0 ? {0}", r >= new MyFraction(0, 1));
             Console.WriteLine("Checking: r < g,abs() ? {0}", r < g.abs());
             Console.WriteLine("Checking: g,abs() = {0}", g.abs());
@@ -149,17 +164,17 @@ namespace TestConsoleApp
             Console.WriteLine("  f.ceil(2)) = {0}", f.ceil(2));
             Console.WriteLine("  f.round()) = {0}", f.round());
             Console.WriteLine("  f.round(2)) = {0}", f.round(2));
-            Console.WriteLine("  f.round(2).toDecimalString(40)) = {0}", f.round(2).toDecimalString(40));
-            Console.WriteLine("  (f * new MyFraction(1000000, 1)).round(-4).toDecimalString(10)) = {0}", (f * new MyFraction(1000000, 1)).round(-4).toDecimalString(10));
-            Console.WriteLine("  (f * new MyFraction(1000000, 1)).floor(-4).toDecimalString(10)) = {0}", (f * new MyFraction(1000000, 1)).floor(-4).toDecimalString(10));
-            Console.WriteLine("  (f * new MyFraction(1000000, 1)).ceil(-4).toDecimalString(10)) = {0}", (f * new MyFraction(1000000, 1)).ceil(-4).toDecimalString(10));
-            Console.WriteLine("  (f * new MyFraction(1000000, 1)).trunc(-4).toDecimalString(10)) = {0}", (f * new MyFraction(1000000, 1)).trunc(-4).toDecimalString(10));
+            Console.WriteLine("  f.round(2).toDecimalString(40)) = {0}", f.round(2).ToDecimalString(40));
+            Console.WriteLine("  (f * new MyFraction(1000000, 1)).round(-4).toDecimalString(10)) = {0}", (f * new MyFraction(1000000, 1)).round(-4).ToDecimalString(10));
+            Console.WriteLine("  (f * new MyFraction(1000000, 1)).floor(-4).toDecimalString(10)) = {0}", (f * new MyFraction(1000000, 1)).floor(-4).ToDecimalString(10));
+            Console.WriteLine("  (f * new MyFraction(1000000, 1)).ceil(-4).toDecimalString(10)) = {0}", (f * new MyFraction(1000000, 1)).ceil(-4).ToDecimalString(10));
+            Console.WriteLine("  (f * new MyFraction(1000000, 1)).trunc(-4).toDecimalString(10)) = {0}", (f * new MyFraction(1000000, 1)).trunc(-4).ToDecimalString(10));
             Console.WriteLine("  f.trunc()) = {0}", f.trunc());
             Console.WriteLine("  f.trunc(2)) = {0}", f.trunc(2));
             Console.WriteLine("  f.intPart()) = {0}", f.intPart());
             Console.WriteLine("  f.fracPart()) = {0}", f.fracPart());
-            Console.WriteLine("  f.toDecimalString(40) = {0}", f.toDecimalString(40));
-            Console.WriteLine("  f.toDecimalString() = {0}", f.toDecimalString());
+            Console.WriteLine("  f.toDecimalString(40) = {0}", f.ToDecimalString(40));
+            Console.WriteLine("  f.toDecimalString() = {0}", f.ToDecimalString());
             Console.WriteLine();
 
             Console.WriteLine("-f = {0}", -f);
@@ -169,22 +184,22 @@ namespace TestConsoleApp
             Console.WriteLine("  (-f).ceil(2)) = {0}", (-f).ceil(2));
             Console.WriteLine("  (-f).round()) = {0}", (-f).round());
             Console.WriteLine("  (-f).round(2)) = {0}", (-f).round(2));
-            Console.WriteLine("  (-f).round(2).toDecimalString(50)) = {0}", (-f).round(2).toDecimalString(50));
-            Console.WriteLine("  ((-f) * new MyFraction(1000000, 1)).round(-4).toDecimalString(10)) = {0}", ((-f) * new MyFraction(1000000, 1)).round(-4).toDecimalString(10));
-            Console.WriteLine("  ((-f) * new MyFraction(1000000, 1)).floor(-4).toDecimalString(10)) = {0}", ((-f) * new MyFraction(1000000, 1)).floor(-4).toDecimalString(10));
-            Console.WriteLine("  ((-f) * new MyFraction(1000000, 1)).ceil(-4).toDecimalString(10)) = {0}", ((-f) * new MyFraction(1000000, 1)).ceil(-4).toDecimalString(10));
-            Console.WriteLine("  ((-f) * new MyFraction(1000000, 1)).trunc(-4).toDecimalString(10)) = {0}", ((-f) * new MyFraction(1000000, 1)).trunc(-4).toDecimalString(10));
+            Console.WriteLine("  (-f).round(2).toDecimalString(50)) = {0}", (-f).round(2).ToDecimalString(50));
+            Console.WriteLine("  ((-f) * new MyFraction(1000000, 1)).round(-4).toDecimalString(10)) = {0}", ((-f) * new MyFraction(1000000, 1)).round(-4).ToDecimalString(10));
+            Console.WriteLine("  ((-f) * new MyFraction(1000000, 1)).floor(-4).toDecimalString(10)) = {0}", ((-f) * new MyFraction(1000000, 1)).floor(-4).ToDecimalString(10));
+            Console.WriteLine("  ((-f) * new MyFraction(1000000, 1)).ceil(-4).toDecimalString(10)) = {0}", ((-f) * new MyFraction(1000000, 1)).ceil(-4).ToDecimalString(10));
+            Console.WriteLine("  ((-f) * new MyFraction(1000000, 1)).trunc(-4).toDecimalString(10)) = {0}", ((-f) * new MyFraction(1000000, 1)).trunc(-4).ToDecimalString(10));
             Console.WriteLine("  (-f).trunc()) = {0}", (-f).trunc());
             Console.WriteLine("  (-f).trunc(2)) = {0}", (-f).trunc(2));
             Console.WriteLine("  (-f).intPart()) = {0}", (-f).intPart());
             Console.WriteLine("  (-f).fracPart()) = {0}", (-f).fracPart());
-            Console.WriteLine("  (-f).toDecimalString(50) = {0}", (-f).toDecimalString(50));
-            Console.WriteLine("  (-f).toDecimalString() = {0}", (-f).toDecimalString());
+            Console.WriteLine("  (-f).toDecimalString(50) = {0}", (-f).ToDecimalString(50));
+            Console.WriteLine("  (-f).toDecimalString() = {0}", (-f).ToDecimalString());
             Console.WriteLine();
 
             MyFraction g2 = new MyFraction(Math.Sqrt(2));
             Console.WriteLine("g2 = {0}", g2);
-            Console.WriteLine("g2.toDecimalString() = {0}", g2.toDecimalString());
+            Console.WriteLine("g2.toDecimalString() = {0}", g2.ToDecimalString());
             Console.WriteLine("Math.Sqrt(2) = {0}", Math.Sqrt(2));
             Console.WriteLine();
 
@@ -205,16 +220,22 @@ namespace TestConsoleApp
             Console.WriteLine("f7 = {0}", f7);
             Console.WriteLine();
 
-            Console.WriteLine("As a decimal expression, f1 = {0}", f1.toDecimalString());
-            Console.WriteLine("As a decimal expression, f2 = {0}", f2.toDecimalString());
-            Console.WriteLine("As a decimal expression, f3 = {0}", f3.toDecimalString());
-            Console.WriteLine("As a decimal expression, f4 = {0}", f4.toDecimalString());
-            Console.WriteLine("As a decimal expression, f5 = {0}", f5.toDecimalString());
-            Console.WriteLine("As a decimal expression, f6 = {0}", f6.toDecimalString());
-            Console.WriteLine("As a decimal expression, f7 = {0}", f7.toDecimalString());
+            Console.WriteLine("As a decimal expression, f1 = {0}", f1.ToDecimalString());
+            Console.WriteLine("As a decimal expression, f2 = {0}", f2.ToDecimalString());
+            Console.WriteLine("As a decimal expression, f3 = {0}", f3.ToDecimalString());
+            Console.WriteLine("As a decimal expression, f4 = {0}", f4.ToDecimalString());
+            Console.WriteLine("As a decimal expression, f5 = {0}", f5.ToDecimalString());
+            Console.WriteLine("As a decimal expression, f6 = {0}", f6.ToDecimalString());
+            Console.WriteLine("As a decimal expression, f7 = {0}", f7.ToDecimalString());
             Console.WriteLine();
 
             Test_Infinity();
+            Console.WriteLine("0.3 - 0.2 - 0.1 = {0}", 0.3 - 0.2 - 0.1);   // Output is-2.77555756156289E-17
+            Console.WriteLine();
+
+
+            Test_ToDecimalString();
+
 
             Console.Write("Press any key...");
             Console.ReadKey();
