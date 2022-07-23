@@ -486,8 +486,6 @@ namespace knumerics
 
         public string ToDecimalString(int prec = 20)
         {
-            //////// Console.WriteLine("Start toDecimalString(i) with this = {0}", this);
-
             string s = "";
             if (this.m_den == 0)
             {
@@ -515,7 +513,6 @@ namespace knumerics
                 return s;
             }
 
-
             BigInteger a = this.m_num;
             BigInteger b = this.m_den;
             if (b < 0)
@@ -541,9 +538,6 @@ namespace knumerics
 
             if (prec <= 0)
             {
-                /// s += String.Format("{0}", q);
-                /// return s;
-
                 BigInteger r2 = new BigInteger(10);
 
                 BigInteger y = (r2 + this.m_den / 2) / this.m_den;
@@ -554,52 +548,27 @@ namespace knumerics
                 return s;
             }
 
-            //////// Console.WriteLine("Step [A]");
-
             if (r != 0)
             {
-                //////// Console.WriteLine("  Step [B]");
-
                 BigInteger nval = q;
 
-                // s += String.format("%d", q);
-                /// s += String.format("_%d/%d", r, b);
-                /*******
-                long t = (r + b) * mPow(10, 11) / b;
-                t = (t + 5) / 10;
-                String s2 = String.format("%d",t);
-                s += String.format(".%s", s2.substring(1));
-                ******/
                 BigInteger t = r + b;
                 BigInteger q3 = 0;
                 string s3 = "";
                 for (int i = 0; i < prec + 1; i++)
                 {
-                    /// q3 = (t * 10) / b;
                     q3 = t / b;
                     s3 += String.Format("{0}", q3);
-                    /// t = (t * 10) - q3*b;
                     t = (t - b * q3) * 10;
                 }
 
-                // q3 = (t * 10) / b;
-                // s3 += String.format("%d", q3);
-                //  t = (t * 10) - q3*b;
-
-                //////// Console.WriteLine("    prec = {0}, 2*t = {1}, b = {2}, s3 = {3}", prec, 2*t, b, s3);
-
-
                 int carry = 0;
 
-                /// if (sign > 0 && q3 >= 5)
                 if (sign > 0 && t / 5 >= b)
                     carry = 1;
-                /// else if (sign < 0 && q3 > 0 && q3 <= 5)
-                /// else if (sign < 0 && q3 > 5)
+
                 else if (sign < 0 && t / 5 > b)
                     carry = 1;
-
-                //////// Console.WriteLine("             carry = {0}, 2*t = {1}, t/5 = {2}. b = {3}, sign = {4}", carry, 2*t, t/5, b, sign);
 
                 char[] digits = s3.ToCharArray();
                 for (int j = digits.Length - 1; j >= 0; j--)
@@ -617,23 +586,17 @@ namespace knumerics
                         digits[j] = (char)(digits[j] + 1);
                         carry = 0;
                     }
-                    /////// System.out.printf(" %c", digits[j]);
                 }
-                /////// System.out.println("\n");
 
-                // s += String.format("%d", q);
-                //////// if (carry > 0)
                 if (digits[0] == '2')
                 {
                     nval += 1;
                 }
 
-                /// s += String.format(".%s", s3.substring(1, s3.length() - 1));
                 string s4 = new String(digits);
                 int j1 = digits.Length;
                 for (int j = j1 - 1; j >= 0; j--)
                 {
-                    /// System.out.printf("    digits[%d] = '%c'\n", j, digits[j]);
                     if (digits[j] != '0')
                     {
                         j1 = j + 1;
@@ -641,38 +604,25 @@ namespace knumerics
                     }
                 }
 
-                ///////// Console.WriteLine("    j1 = {0}\n", j1);
-
-                /// if (j1 < digits.length)
-                /// {
                 if (j1 > 0)
                 {
                     s4 = s4.Substring(1, j1 - 1);
-                    /// s += String.Format("{0}.{1}", nval, s4.substring(0, s4.length() ));
                     if (s4.Length > 0)
                         s += String.Format("{0}.{1}", nval, s4);
                     else
                         s += String.Format("{0}", nval);
-                    //////// / nsole.WriteLine("   s4 = {0}\n", s4);
-                    //////// Console.WriteLine("   s = {0}\n", s);
                 }
                 else
                 {
                     s += String.Format("{0}", nval);
                 }
-                /// }
-                /// s += String.format("%d.%s", nval, s4.substring(0, s4.length() ));
             }
             else
             {
                 s += String.Format("{0}", q);
             }
-
-            ////////  Console.WriteLine(" s = {0}\n", s);
-
             return s;
         }
-        ///
 
         public override string ToString()
         {
