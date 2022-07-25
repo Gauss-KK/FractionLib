@@ -33,7 +33,7 @@ usimg knumerics;
 
 
 
-#### Copare to a usual coding:
+#### Compare to a usual csharp coding:
 ``` C#
     double c3 = 3E200;
     double c2 = 2E200;
