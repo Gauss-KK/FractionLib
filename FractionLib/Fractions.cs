@@ -445,9 +445,9 @@ namespace knumerics
             else if (this.m_den == -1 && this.m_num == 0)
                 return "-0";
             else if (this.m_den == -1)
-                return String.Format("%d", -this.m_num);
+                return String.Format("{0}", -this.m_num);
             else if (this.m_den == 1)
-                return String.Format("%d", this.m_num);
+                return String.Format("{0}", this.m_num);
             else
             {
                 BigInteger a = this.m_num;
@@ -1022,11 +1022,13 @@ namespace knumerics
 
             BigInteger c = left.getNum() * right.getDen();
             BigInteger d = left.getDen() * right.getNum();
-            if (c < d)
+            BigInteger r = c - d;
+            
+            if (r < 0)
             {
                 return -1;
             }
-            else if (c > d)
+            else if (r > 0)
             {
                 return 1;
             }
@@ -1061,7 +1063,7 @@ namespace knumerics
         public static bool operator >(MyFraction left, MyFraction right)
         {
             int result = compare(left, right);
-            return result < 0;
+            return result > 0;
         }
 
         public static bool operator >=(MyFraction left, MyFraction right)
