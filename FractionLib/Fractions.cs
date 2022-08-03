@@ -1661,7 +1661,6 @@ namespace knumerics
         {
             if (left.isNaN() || right.isNaN())
             {
-                /// return (new MyFraction(0, 0), new MyFraction(0, 0));
                 rem = new MyFraction(0, 0);
                 return new MyFraction(0, 0);
             }
@@ -1670,19 +1669,16 @@ namespace knumerics
             {
                 if (left.isInfinite() && right.isInfinite())
                 {
-                    /// return (new MyFraction(0, 0), new MyFraction(0, 0));
                     rem = new MyFraction(0, 0);
                     return new MyFraction(0, 0);
                 }
                 else if (left.isInfinite())
                 {
-                    /// return (new MyFraction(0, 0), new MyFraction(0, 0));
                     rem = new MyFraction(0, 0);
                     return new MyFraction(0, 0);
                 }
                 else if (right.isInfinite())
                 {
-                    /// return (new MyFraction(0, 1), new MyFraction(0, 0));
                     rem = new MyFraction(0, 1);
                     return new MyFraction(0, 0);
                 }
@@ -1715,34 +1711,11 @@ namespace knumerics
             BigInteger q = (a * d) / (b * c);
             BigInteger r = (a * d) - (b * c) * q;
 
-            /*
-            if (r < 0)
-            {
-                   q = q - 1;
-                   r = r + (b * c);
-            }
-            */
-
             MyFraction z = new MyFraction(a * d, b*c);
             MyFraction z2 = z.floor();
 
-            /// MyFraction w = new MyFraction(r, b * c);
-            /// action w = left - right * new MyFraction(q, 1);
             MyFraction w = left - right*z2;
 
-
-            /*
-            if (w.isNegative())
-            {
-                z = z - new MyFraction(1, 1);
-                w = left + abs(right);
-            }
-            else if (w >= abs(right))
-            {
-                z = z + new MyFraction(1, 1);
-                w = left - abs(right);
-            }
-            */
 
             rem = w;
             return z2;
