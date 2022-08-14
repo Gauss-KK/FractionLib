@@ -448,36 +448,33 @@ namespace knumerics
                 return String.Format("{0}", -this.m_num);
             else if (this.m_den == 1)
                 return String.Format("{0}", this.m_num);
+            BigInteger a = this.m_num;
+            BigInteger b = this.m_den;
+            if (b < 0)
+            {
+                a = -a;
+                b = -b;
+            }
+
+            BigInteger q = a / b;
+            BigInteger r = a - b * q;
+            if (r < 0)
+            {
+                q = q - 1;
+                r = r + b;
+            }
+
+            if (r != 0)
+            {
+                if (q < 0)
+                    s += String.Format("({0})_", q);
+                else if (q > 0)
+                    s += String.Format("{0}_", q);
+                s += String.Format("{0}/{1}", r, b);
+            }
             else
             {
-                BigInteger a = this.m_num;
-                BigInteger b = this.m_den;
-                if (b < 0)
-                {
-                    a = -a;
-                    b = -b;
-                }
-
-                BigInteger q = a / b;
-                BigInteger r = a - b * q;
-                if (r < 0)
-                {
-                    q = q - 1;
-                    r = r + b;
-                }
-
-                if (r != 0)
-                {
-                    if (q < 0)
-                        s += String.Format("({0})", q);
-                    else if (q > 0)
-                        s += String.Format("{0}", q);
-                    s += String.Format("_{0}/{1}", r, b);
-                }
-                else
-                {
-                    s += String.Format("{0}", q);
-                }
+                 s += String.Format("{0}", q);
             }
 
             return s;
