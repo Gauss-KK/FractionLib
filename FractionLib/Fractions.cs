@@ -430,6 +430,53 @@ namespace knumerics
         bool isNonNegative() { return m_num <= 0 && m_den != 0; }
 
 
+         public static explicit operator double (MyFraction right)
+         {
+         	 int sign = 1;
+              BigInteger b = right.getNum();
+              if (b < 0)
+              {
+              	  sign = -1;
+              	  b = - b;
+              }
+              BigInteger c = right.getDen();
+
+         	 if (c == 0)
+         	 {
+            	       if (b > 0)
+         	 	    return double.PositiveInfinity;
+            	       else if (b < 0)
+         	 	    return double.NegativeInfinity;
+         	 	return double.NaN;
+         	 }
+
+              BigInteger a = b / c;
+              b = b - c*a;
+              double y = 0.0;
+              
+              if (a > new BigInteger(double.MaxValue))
+              {
+                    y = double.PositiveInfinity;
+              }
+              else if (a >= BigInteger.Pow(10, 20))
+              {
+                    y =  (double) a;
+              }
+              else
+              {
+                    BigInteger r = b - c*a;
+                    y = (double) a;
+                    y += (double) r / (double) c;
+              }
+              
+              if (sign < 0)
+              {
+              	  y = -y;
+              }
+              return y;
+      }
+
+
         public string ToMixedForm()
         {
             string s = "";
