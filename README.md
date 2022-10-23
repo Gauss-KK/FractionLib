@@ -51,3 +51,20 @@ usimg knumerics;
     Console.WriteLine("d1 = {0}", d1);
     Console.WriteLine("d3 - d2 - d1 = {0}", d3 - d2 - d1);
 ```
+
+
+
+
+#### Example using string interpolation of MyFraction:
+``` C#
+    MyFraction f = new MyFraction(1.2345E-100);
+    Console.Write("f = {0:e30}\n", f);
+    Console.Write($"-f = {-f:e30}\n");
+
+    MyFraction g = new MyFraction("123456.78E+095", "200");    // Create fractio from string
+    Console.Write("g = {0:E40}\n", g);
+    Console.Write("g = {0:f10}\n", g);
+    Console.Write("g = {0:g20}\n", g);
+    Console.Write("g = {0:M}\n", g);   .. fraction of mixed form
+    Console.Write("g = {0}\n", g);     // Usual fraction
+```
