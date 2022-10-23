@@ -1,8 +1,7 @@
+using knumerics;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Numerics;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-using knumerics;
 
 namespace UnitTestFractionLib
 {
@@ -253,9 +252,40 @@ namespace UnitTestFractionLib
         {
             MyFraction g2 = new MyFraction(Math.Sqrt(2));
 
-            Assert.AreEqual(g2.ToString(), "2486151499/1757974584");
-            Assert.AreEqual(g2.ToDecimalString(), "1.4142135623730951505");
+            Assert.AreEqual(g2.ToString(), "54608393/38613965");
+            Assert.AreEqual(g2.ToDecimalString(), "1.41421356237309481168");
             Assert.AreEqual(Math.Sqrt(2).ToString(), "1.4142135623731");
+        }
+
+        [TestMethod]
+        public void TestSigDigits12()
+        {
+            MyFraction f1 = new MyFraction(-2.340001E+5);
+            MyFraction f2 = new MyFraction(-2.3400010059056789E-5);
+            MyFraction f3 = new MyFraction("-23400015", "1000000000000");
+            MyFraction f4 = new MyFraction(1.0 / 7 * 1E+30);
+            MyFraction f5 = new MyFraction(1.2345E-100);
+
+
+            Assert.AreEqual(f1.ToString(), "-2340001/10");
+            Assert.AreEqual(f1.ToDecimalString(), "-234000.1");
+            Assert.AreEqual(f1.ToDecimalString(40), "-234000.1");
+
+            Assert.AreEqual(f2.ToString(), "-106310212/4543169500000");
+            Assert.AreEqual(f2.ToDecimalString(), "-0.00002340001005905679");
+            Assert.AreEqual(f2.ToDecimalString(40), "-0.0000234000100590567884381157251561932699");
+
+            Assert.AreEqual(f3.ToString(), "-4680003/200000000000");
+            Assert.AreEqual(f3.ToDecimalString(), "-0.000023400015");
+            Assert.AreEqual(f3.ToDecimalString(40), "-0.000023400015");
+
+            Assert.AreEqual(f4.ToString(), "1000000000000000000000000000000/7");
+            Assert.AreEqual(f4.ToDecimalString(), "142857142857142857142857142857.14285714285714285714");
+            Assert.AreEqual(f4.ToDecimalString(40), "142857142857142857142857142857.1428571428571428571428571428571428571429");
+
+            Assert.AreEqual(string.Format("{0:e30}", f5), "1.234500000000000000000000000000e-100");
+            Assert.AreEqual(string.Format($"{-f5:e30}"), "-1.234500000000000000000000000000e-100");
+
         }
 
     }

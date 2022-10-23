@@ -139,13 +139,16 @@ namespace TestConsoleApp
             Console.WriteLine("Checking: f,abs() = {0}", f.abs());
             Console.WriteLine();
 
-            MyFraction c3 = new MyFraction(3E200);
+
+            MyFraction c3 = new MyFraction(3E200d);
+            // MyFraction c3 = new MyFraction((double) 3);
             Console.WriteLine("c3 = {0}", c3);
             MyFraction c2 = new MyFraction(2E200);
             Console.WriteLine("c2 = {0}", c2);
             MyFraction c1 = new MyFraction(1E200);
             Console.WriteLine("c1 = {0}", c1);
             Console.WriteLine("c3 - c2 - c1 = {0}", c3 - c2 - c1);
+
 
             MyFraction d3 = MyFraction.convertFromDouble(0.3E-100);
             Console.WriteLine("d3 = {0}", d3);
@@ -236,6 +239,92 @@ namespace TestConsoleApp
 
             Test_ToDecimalString();
 
+
+            MyFraction f14 = new MyFraction(-2.340001E+5);
+            Console.Write("f14 = {0} = {1} = {2}\n", f14, f14.ToDecimalString(), f14.ToDecimalString(40));
+            Console.WriteLine("");
+
+            MyFraction g14 = new MyFraction(-2.3400010059056789E-5);
+            Console.Write("g14 = {0} = {1}\n", g14, g14.ToDecimalString(40));
+            Console.Write("g14 = {0} = {1} = {2}\n", g14, g14.ToDecimalString(), g14.ToDecimalString(40));
+            Console.WriteLine("");
+
+            MyFraction g15 = new MyFraction("-23400015", "1000000000000");
+            Console.Write("g15 = {0} = {1}\n", g15, g15.ToDecimalString(40));
+            Console.Write("g15 = {0} = {1} = {2}\n", g15, g15.ToDecimalString(), g15.ToDecimalString(40));
+            Console.WriteLine("");
+
+            MyFraction f15 = new MyFraction(1.0 / 7 * 1E+30);
+            Console.Write("f15 = {0} = {1}\n", f15, f15.ToDecimalString(40));
+            Console.Write("f15 = {0} = {1} = {2}\n", f15, f15.ToDecimalString(), f15.ToDecimalString(40));
+            Console.WriteLine("");
+
+
+            MyFraction f16 = new MyFraction(1.2345E+100);
+            Console.Write("f16 = {0:e30}\n", f16);
+            Console.Write("-f16 = {0:e30}\n", -f16);
+            Console.Write("f16 = {0} = {1}\n", f16, f16.ToDecimalString(40));
+            Console.Write("f16 = {0} = {1} = {2}\n", f16, f16.ToDecimalString(), f16.ToDecimalString(40));
+            Console.Write("(double) {0} - {1:F0} = {2}\n", f16, 1.2345E+100, (double) f16 - 1.2345E+100);
+            Console.Write("(double) {0} == {1} ? {2}\n", (double) f16, 1.2345E+100, (double)f16 == 1.2345E+100);
+            Console.WriteLine("");
+
+            f16 = new MyFraction(0.1 + 0.2);
+            Console.Write("f16 = 0.1 + 0.2 = {0} = {1}\n", f16, f16.ToDecimalString(30));
+            Console.Write("f16 = 0.1 + 0.2 = {0} = {1} = {2}\n", f16, f16.ToDecimalString(), f16.ToDecimalString(30));
+            Console.Write("(double) f16 - {0:G} = {1}\n", 0.3, (double)f16 - 0.3);
+            Console.Write("(double) f16 == {0} ? {1}\n", 0.3, (double)f16 == 0.3);
+            Console.Write("(double) f16 == 0.1 + 0.2 ? {0}\n", (double)f16 == 0.1 + 0.2);
+            Console.Write("0.3 == 0.1 + 0.2 ? {0}\n", 0.3 == 0.1 + 0.2);
+            Console.Write("0.3 - 0.1 - 0.2 == 0.0 ? {0}\n", 0.3 - 0.1 - 0.2 == 0.0);
+            Console.Write("(double) f16 - 0.1 - 0.2 == 0.0 ? {0}\n", (double) f16 - 0.1 - 0.2 == 0.0);
+            Console.Write("0.1 + 0.2 == {0:E20}\n", 0.1 + 0.2);
+            Console.Write("0.3 == {0:E20}\n", 0.3);
+            Console.Write("f16 == {0:E}\n", f16.ToDecimalString(20));
+            Console.Write("f16 == {0}\n", f16);
+            Console.Write("   f16 == {0:E}\n", f16);
+            Console.Write("       f16 == {0:E30}\n", f16);
+            Console.Write("       f16 == {0:e50}\n", f16);
+            Console.WriteLine("");
+
+
+            MyFraction f17 = new MyFraction(1.2345E-100);
+            Console.Write("f17 = {0:e30}\n", f17);
+            Console.Write($"-f17 = {-f17:e30}\n");
+            f17 = new MyFraction(-1.2345E-100);
+            Console.Write("f17 = {0:e30}\n", f17);
+            Console.Write("f17.ToDecimalString() = {0}\n", f17.ToDecimalString());
+            Console.Write("f17.ToString() = {0}\n", f17.ToString());
+            Console.Write("f17 = {0:e30}\n", f17);
+            Console.Write("f17/100 = {0:e30}\n", f17/new MyFraction(100));
+
+            Console.Write("f17/1000 = {0:e30}\n", f17 / new MyFraction(1000));
+
+            Console.Write("f17/10 = {0:e30}\n", f17 / new MyFraction(10));
+
+            Console.Write("f17/1.0 = {0:e30}\n", f17 / new MyFraction(1.0));
+            Console.Write("f17/0.1 = {0:e30}\n", f17 / new MyFraction(0.1));
+            Console.Write("f17/0.01 = {0:e30}\n", f17 / new MyFraction(0.01));
+            Console.Write("f17*100 = {0:e30}\n", f17 * new MyFraction(100));
+            Console.Write("f17*10000000000 = {0:e30}\n", f17 * new MyFraction(10000000000));
+            Console.Write("f17*10E96 = {0:e30}\n", f17 * new MyFraction(10E96));
+            Console.Write("f17*10E97 = {0:e30}\n", f17 * new MyFraction(10E97));
+            Console.Write("f17*10E98 = {0:e30}\n", f17 * new MyFraction(10E98));
+            Console.Write("f17*10E99 = {0:e30}\n", f17 * new MyFraction(10E99));
+            Console.Write("f17*10E100 = {0:e30}\n", f17 * new MyFraction(10E100));
+            Console.Write("f17*1E99 = {0:e30}\n", f17 * new MyFraction(1E99));
+            Console.Write("f17*1E100 = {0:e30}\n", f17 * new MyFraction(1E100));
+            Console.Write("f17*-1E100 = {0:e30}\n", f17 * new MyFraction(-1E100));
+            Console.Write("f17*-1E105 = {0:f20}\n", f17 * new MyFraction(-1E105));
+            Console.Write("f17*-1E105 = {0:f20}\n", f17 * new MyFraction("-1E105"));
+            Console.Write("f17*-1E105 = {0:f20}\n", (f17 * new MyFraction("-1E105")).ToDecimalString());
+            Console.Write("f17*-1E105 = {0:e20}\n", f17 * new MyFraction("-1E105"));
+            Console.Write("f17*-1E105 = {0:g20}\n", f17 * new MyFraction("-1E105"));
+            Console.WriteLine();
+
+
+            MyFraction f23 = new MyFraction("-23400015", "1000000000000");
+            Console.WriteLine("f23.ToString() = {0}", f23.ToString());
 
             Console.Write("Press any key...");
             Console.ReadKey();
